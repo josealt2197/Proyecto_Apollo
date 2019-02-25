@@ -25,15 +25,15 @@
             </div>
         </div>
     </div>
-
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Apollo Transactions</p>
-        </footer>
-    </div>
-
+    <center>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Apollo Transactions</p>
+            </footer>
+        </div>
+    </center>
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     @RenderSection("Scripts", false)
