@@ -34,7 +34,7 @@ namespace Proyecto_Apollo.Controllers
                 var isExist = IsEmailExist(user.EmailID);
                 if (isExist)
                 {
-                    ModelState.AddModelError("EmailExist", "Email already exist");
+                    ModelState.AddModelError("EmailExist", "Ya existe una cuenta con el correo electrónico ingresado");
                     return View(user);
                 }
                 #endregion
@@ -57,15 +57,15 @@ namespace Proyecto_Apollo.Controllers
 
                     //Send Email to User
                     SendVerificationLinkEmail(user.EmailID, user.ActivationCode.ToString());
-                    message = "Registration successfully done. Account activation link " + 
-                        " has been sent to your email id:" + user.EmailID;
+                    message = "Registro realizado correctamente. El enlace de activación de la cuenta" + 
+                        "ha sido enviado a su correo electrónico: " + user.EmailID;
                     Status = true;
                 }
                 #endregion
             }
             else
             {
-                message = "Invalid Request";
+                message = "Solicitud no válida";
             }
 
             ViewBag.Message = message;
@@ -91,7 +91,7 @@ namespace Proyecto_Apollo.Controllers
                 }
                 else
                 {
-                    ViewBag.Message = "Invalid Request";
+                    ViewBag.Message = "Solicitud no válida.";
                 }
             }
             ViewBag.Status = Status;
@@ -118,7 +118,7 @@ namespace Proyecto_Apollo.Controllers
                 {
                     if (!v.IsEmailVerified)
                     {
-                        ViewBag.Message = "Please verify your email first";
+                        ViewBag.Message = "Por favor verifique su correo electrónico antes de ingresar.";
                         return View();
                     }
 
@@ -144,12 +144,12 @@ namespace Proyecto_Apollo.Controllers
                     }
                     else
                     {
-                        message = "Invalid credential provided";
+                        message = "Alguna de sus credenciales no es correcta, intente de nuevo.";
                     }
                 }
                 else
                 {
-                    message = "Invalid credential provided";
+                    message = "Alguna de sus credenciales no es correcta, intente de nuevo.";
                 }
             }
             ViewBag.Message = message;
@@ -182,24 +182,24 @@ namespace Proyecto_Apollo.Controllers
             var verifyUrl = "/User/"+emailFor+"/" + activationCode;
             var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
 
-            var fromEmail = new MailAddress("prograVcuc@gmail.com", "Dotnet Awesome");
+            var fromEmail = new MailAddress("prograVcuc@gmail.com", "Apollo Transactions");
             var toEmail = new MailAddress(emailID);
-            var fromEmailPassword = "cursoCUC2019"; // Replace with actual password
+            var fromEmailPassword = "cursoCUC2019"; 
 
             string subject = "";
             string body = "";
             if (emailFor == "VerifyAccount")
             {
-                subject = "Your account is successfully created!";
-                body = "<br/><br/>We are excited to tell you that your Dotnet Awesome account is" +
-                    " successfully created. Please click on the below link to verify your account" +
+                subject = "¡Su cuenta ha sido creada exitosamente!";
+                body = "<br/><br/>Nos complace informarle que su cuenta de Apollo Transactions se ha" +
+                    "creado correctamente. Por favor haga clic en el enlace de abajo para verificar su cuenta." +
                     " <br/><br/><a href='" + link + "'>" + link + "</a> ";
 
             }
             else if (emailFor == "ResetPassword")
             {
-                subject = "Reset Password";
-                body = "Hi,<br/>br/>We got request for reset your account password. Please click on the below link to reset your password" +
+                subject = "Recuperar Contraseña";
+                body = "Hi,<br/>br/>Tenemos solicitud para restablecer la contraseña de su cuenta. Haga clic en el enlace de abajo para restablecer su contraseña" +
                     "<br/><br/><a href="+link+">Reset Password link</a>";
             }
 
@@ -252,11 +252,11 @@ namespace Proyecto_Apollo.Controllers
                         //in our model class in part 1
                         dc.Configuration.ValidateOnSaveEnabled = false;
                         dc.SaveChanges();
-                        message = "Reset password link has been sent to your email id.";
+                        message = "El enlace para restablecer la contraseña ha sido enviado a su correo electrónico.";
                     }
                     else
                     {
-                        message = "Account not found";
+                        message = "**Cuenta no encontrada**";
                     }
                 }
                 ViewBag.Message = message;
@@ -305,13 +305,13 @@ namespace Proyecto_Apollo.Controllers
                         user.ResetPasswordCode = "";
                         dc.Configuration.ValidateOnSaveEnabled = false;
                         dc.SaveChanges();
-                        message = "New password updated successfully";
+                        message = "Nueva contraseña actualizada correctamente.";
                     }
                 }
             }
             else
             {
-                message = "Something invalid";
+                message = "Se ha producido un error al actualizar su contraseña.";
             }
             ViewBag.Message = message;
             return View(model);
